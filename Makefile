@@ -10,6 +10,7 @@ PROGRAMS = \
 	array_literal_test \
 	string_array_literal_test \
 	int_array_literal_test \
+	deallocator_test \
 
 LIBRARIES =
 
@@ -21,6 +22,7 @@ check: all
 	./array_literal_test
 	./int_array_literal_test
 	./string_array_literal_test
+	./deallocator_test
 
 #example: example.o obj2.o
 char_literal_test: char_literal_test.o char_literal.o
@@ -28,13 +30,14 @@ string_literal_test: string_literal_test.o string_literal.o
 array_literal_test: array_literal_test.o array_literal.o
 string_array_literal_test: string_array_literal_test.o string_array_literal.o array_literal.o string_literal.o
 int_array_literal_test: int_array_literal_test.o int_array_literal.o array_literal.o
+deallocator_test: deallocator_test.o deallocator.o
 
 $(LIBRARIES): %.a:
 	ar -rv $@ $^
 	ranlib $@
 
 $(PROGRAMS): %: %.o
-	$(CXX) $(LDFLAGS) -o $@ $^ $(LDLIBS)
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c -o $@ $<
